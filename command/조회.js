@@ -14,6 +14,18 @@ async function readCSV(filePath) {
     });
 }
 
+function getUserID(name)
+{
+    fetch(`https://www.roblox.com/users/profile?username=${name}`)
+        .then(r => {
+            if (!r.ok) { throw "Invalid response"; }
+            return r.url.match(/\d+/)[0];
+        })
+        .then(id => {
+            console.log(id);
+        })
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("조회")
@@ -34,6 +46,8 @@ module.exports = {
             const filteredData = data.filter(item => item.user === targetUser);
 
             if (filteredData[0]?.user) {
+                getUser(filteredData[0]?.user)
+
                 const embed = new EmbedBuilder()
                     .setTitle('조회결과')
                     .addFields(
